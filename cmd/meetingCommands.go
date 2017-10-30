@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/jack-cheng/CLI-agenda/errors"
 	"github.com/spf13/cobra"
 )
 
@@ -32,23 +33,23 @@ var createMeetingCmd = &cobra.Command{
 		// get the arguments
 		title, _ := cmd.Flags().GetString("title")
 		if title == "" {
-			errorMsg("title of your meeting is required!")
+			errors.ErrorMsg("title of your meeting is required!")
 		}
 
 		participatorArg, _ := cmd.Flags().GetString("participators")
 		if participatorArg == "" {
-			errorMsg("at least one participators is required!")
+			errors.ErrorMsg("at least one participators is required!")
 		}
 		participators := strings.Split(participatorArg, "+")
 
 		startTime, _ := cmd.Flags().GetString("starttime")
 		if startTime == "" {
-			errorMsg("start time of your meeting is required!")
+			errors.ErrorMsg("start time of your meeting is required!")
 		}
 
 		endTime, _ := cmd.Flags().GetString("endtime")
 		if endTime == "" {
-			errorMsg("end time of your meeting is required!")
+			errors.ErrorMsg("end time of your meeting is required!")
 		}
 
 		// TODO: check if arguments are valid and create a new meeting in the memory

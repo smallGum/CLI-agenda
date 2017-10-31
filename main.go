@@ -14,8 +14,13 @@
 
 package main
 
-import "github.com/jack-cheng/CLI-agenda/cmd"
+import (
+	"github.com/jack-cheng/CLI-agenda/cmd"
+	"github.com/jack-cheng/CLI-agenda/entity"
+)
 
 func main() {
+	entity.InitAllMeetings()
 	cmd.Execute()
+	entity.SaveAllMeetings()
 }

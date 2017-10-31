@@ -15,9 +15,9 @@
 package cmd
 
 import (
-	"fmt"
 	"strings"
 
+	"github.com/jack-cheng/CLI-agenda/entity"
 	"github.com/jack-cheng/CLI-agenda/errors"
 	"github.com/spf13/cobra"
 )
@@ -53,10 +53,29 @@ var createMeetingCmd = &cobra.Command{
 		}
 
 		// TODO: check if arguments are valid and create a new meeting in the memory
-		fmt.Println("Meeting " + title + " created.")
-		fmt.Println("participators: " + participators[0])
-		fmt.Println("start time: " + startTime)
-		fmt.Println("end time: " + endTime)
+		m := new(entity.Meeting)
+		m.NewMeeting(title, startTime, endTime, participators)
+		/*
+			fmt.Println("Meeting " + title + " created.")
+			fmt.Println("participators: " + participators[0])
+			fmt.Println("start time: " + startTime)
+			fmt.Println("end time: " + endTime)
+		*/
+	},
+}
+
+var queryMeetingCmd = &cobra.Command{
+	Use:   "queryMeeting",
+	Short: "Query a meeting",
+	Long:  "Query a meeting with specific title",
+
+	Run: func(cmd *cobra.Command, args []string) {
+		title, _ := cmd.Flags().GetString("title")
+		if title == "" {
+			errors.ErrorMsg("title of your meeting is required!")
+		}
+
+		entity.GetMeeting(title)
 	},
 }
 
@@ -67,7 +86,10 @@ func init() {
 	createMeetingCmd.Flags().StringP("starttime", "s", "", "enter the start time (YYYY-MM-DD) of your meeting.")
 	createMeetingCmd.Flags().StringP("endtime", "e", "", "enter the end time (YYYY-MM-DD) of your meeting.")
 
+	queryMeetingCmd.Flags().StringP("title", "t", "", "query a meeting")
+
 	RootCmd.AddCommand(createMeetingCmd)
+	RootCmd.AddCommand(queryMeetingCmd)
 
 	// Here you will define your flags and configuration settings.
 

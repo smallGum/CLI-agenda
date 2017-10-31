@@ -63,14 +63,12 @@ func (m *Meeting) NewMeeting(title, start, end string, parts []string) {
 	}
 
 	AllMeetings.onesMeetings[m.Sponsor][title] = m
-
-	m.successCreation(title)
 }
 
 // check if title has existed
 func (m *Meeting) validateTitle(title string) {
 	if AllMeetings.allMeetings[title] != nil {
-		errors.ErrorMsg("meeting \"" + title + "\" has been created! Please use another title")
+		errors.ErrorMsg(GetCurrentUser().UserName, "meeting \""+title+"\" has existed. expected another title.")
 	}
 }
 
@@ -86,7 +84,7 @@ func (m *Meeting) validateParticipators(parts []string) {
 		}
 
 		if !flag {
-			errors.ErrorMsg("participator " + part + " has not registered!")
+			errors.ErrorMsg(GetCurrentUser().UserName, "meeting participator "+part+" has not registered.")
 		}
 	}
 }
@@ -94,7 +92,7 @@ func (m *Meeting) validateParticipators(parts []string) {
 // check if start time is less than end time
 func (m *Meeting) validateTime(start, end time.Time) {
 	if start.After(end) || start.Equal(end) {
-		errors.ErrorMsg("start time of meeting must be less than end time!")
+		errors.ErrorMsg(GetCurrentUser().UserName, "invalid start time, which should be less than end time")
 	}
 }
 
@@ -104,15 +102,10 @@ func (m *Meeting) validateNoConflicts(parts []string, start, end time.Time) {
 		for _, ms := range AllMeetings.onesMeetings[part] {
 			if !(end.Before(ms.StartTime) || end.Equal(ms.StartTime) ||
 				start.After(ms.EndTime) || start.Equal(ms.EndTime)) {
-				errors.ErrorMsg("participator " + part + " has another meeting which conflicts this meeting!")
+				errors.ErrorMsg(GetCurrentUser().UserName, "participator "+part+" has meeting time conflict.")
 			}
 		}
 	}
-}
-
-// display success message
-func (m *Meeting) successCreation(title string) {
-	fmt.Printf("meeting %s is successfully created!\n", title)
 }
 
 // -----------------------------------------------------
@@ -123,7 +116,7 @@ func (m *Meeting) successCreation(title string) {
 func getTime(t string) time.Time {
 	tmpTime, err := time.Parse("2006-01-02", t)
 	if err != nil {
-		errors.ErrorMsg("invalid time format: " + t)
+		errors.ErrorMsg(GetCurrentUser().UserName, "invalid time format: "+t)
 	}
 
 	return tmpTime

@@ -1,0 +1,4 @@
+guest: errors.go:20: successfully create meeting "Fuck".
+guest: errors.go:20: create a new meeting "Fuck".
+guest: errors.go:22: successfully create a new meeting "Fuck".
+guest: errors.go:22: successfully create a new meeting "How to Fuck".

@@ -1,0 +1,11 @@
+guest: errors.go:12: meeting participator Alice has not registered.
+guest: errors.go:12: meeting participator Alice has not registered.
+logger: : errors.go:12: fail to open file meetings.json
+guest: errors.go:12: meeting participator Alice has not registered.
+guest: errors.go:12: meeting participator guest has not registered.
+guest: errors.go:12: meeting participator guest has not registered.
+guest: errors.go:12: invalid start time, which should be less than end time
+guest: errors.go:12: invalid time format: 2017-08
+logger: : errors.go:12: reading meetings error: invalid character 'Z' looking for beginning of value
+guest: errors.go:12: meeting "Fuck" has existed. expected another title.
+guest: errors.go:12: participator guest has meeting time conflict.

@@ -10,9 +10,9 @@ import (
 
 // read all meetings from the file
 func loadAllMeetings() []Meeting {
-	file, err := os.OpenFile("meetings.json", os.O_RDONLY, 0)
+	file, err := os.OpenFile("json_files/meetings.json", os.O_RDONLY, 0)
 	if err != nil {
-		errors.ErrorMsg("cannot open file meetings.json!")
+		errors.ErrorMsg("logger: ", "fail to open file meetings.json")
 	}
 
 	ms := make([]Meeting, 0)
@@ -22,7 +22,7 @@ func loadAllMeetings() []Meeting {
 		if err := decoder.Decode(m); err == io.EOF {
 			break
 		} else if err != nil {
-			errors.ErrorMsg("reading meetings error: " + err.Error())
+			errors.ErrorMsg("logger: ", "reading meetings error: "+err.Error())
 		}
 
 		ms = append(ms, *m)
@@ -34,7 +34,7 @@ func loadAllMeetings() []Meeting {
 
 // write all meetings to the file
 func wirteAllMeetings() {
-	file, _ := os.OpenFile("meetings.json", os.O_WRONLY|os.O_CREATE, 0)
+	file, _ := os.OpenFile("json_files/meetings.json", os.O_WRONLY|os.O_CREATE, 0)
 	encoder := json.NewEncoder(file)
 
 	for _, v := range AllMeetings.allMeetings {

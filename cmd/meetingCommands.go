@@ -33,27 +33,28 @@ var createMeetingCmd = &cobra.Command{
 		// get the arguments
 		title, _ := cmd.Flags().GetString("title")
 		if title == "" {
-			errors.ErrorMsg("title of your meeting is required!")
+			errors.ErrorMsg(entity.GetCurrentUser().UserName, "title of new meeting is required.")
 		}
 
 		participatorArg, _ := cmd.Flags().GetString("participators")
 		if participatorArg == "" {
-			errors.ErrorMsg("at least one participators is required!")
+			errors.ErrorMsg(entity.GetCurrentUser().UserName, "at least one participators of new meeting is required!")
 		}
 		participators := strings.Split(participatorArg, "+")
 
 		startTime, _ := cmd.Flags().GetString("starttime")
 		if startTime == "" {
-			errors.ErrorMsg("start time of your meeting is required!")
+			errors.ErrorMsg(entity.GetCurrentUser().UserName, "start time of new meeting is required!")
 		}
 
 		endTime, _ := cmd.Flags().GetString("endtime")
 		if endTime == "" {
-			errors.ErrorMsg("end time of your meeting is required!")
+			errors.ErrorMsg(entity.GetCurrentUser().UserName, "end time of new meeting is required!")
 		}
 
 		m := new(entity.Meeting)
 		m.NewMeeting(title, startTime, endTime, participators)
+		errors.LogMeetingOperation(entity.GetCurrentUser().UserName, "successfully create a new meeting \""+title+"\".")
 	},
 }
 
@@ -65,15 +66,16 @@ var queryMeetingsCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		startTime, _ := cmd.Flags().GetString("starttime")
 		if startTime == "" {
-			errors.ErrorMsg("start time of your meeting is required!")
+			errors.ErrorMsg(entity.GetCurrentUser().UserName, "start time of meeting interval is required!")
 		}
 
 		endTime, _ := cmd.Flags().GetString("endtime")
 		if endTime == "" {
-			errors.ErrorMsg("end time of your meeting is required!")
+			errors.ErrorMsg(entity.GetCurrentUser().UserName, "end time of meeting interval is required!")
 		}
 
 		entity.GetMeetings(startTime, endTime)
+		errors.LogMeetingOperation(entity.GetCurrentUser().UserName, "query the meetings between "+startTime+" and "+endTime+".")
 	},
 }
 

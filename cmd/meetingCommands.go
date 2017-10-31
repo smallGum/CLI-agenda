@@ -52,30 +52,28 @@ var createMeetingCmd = &cobra.Command{
 			errors.ErrorMsg("end time of your meeting is required!")
 		}
 
-		// TODO: check if arguments are valid and create a new meeting in the memory
 		m := new(entity.Meeting)
 		m.NewMeeting(title, startTime, endTime, participators)
-		/*
-			fmt.Println("Meeting " + title + " created.")
-			fmt.Println("participators: " + participators[0])
-			fmt.Println("start time: " + startTime)
-			fmt.Println("end time: " + endTime)
-		*/
 	},
 }
 
-var queryMeetingCmd = &cobra.Command{
-	Use:   "queryMeeting",
-	Short: "Query a meeting",
-	Long:  "Query a meeting with specific title",
+var queryMeetingsCmd = &cobra.Command{
+	Use:   "queryMeetings",
+	Short: "Query meetings of current login user between specific time interval",
+	Long:  `To query your meetngs, please enter start time and end time of your meeting with the format YYYY-MM-DD.`,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		title, _ := cmd.Flags().GetString("title")
-		if title == "" {
-			errors.ErrorMsg("title of your meeting is required!")
+		startTime, _ := cmd.Flags().GetString("starttime")
+		if startTime == "" {
+			errors.ErrorMsg("start time of your meeting is required!")
 		}
 
-		entity.GetMeeting(title)
+		endTime, _ := cmd.Flags().GetString("endtime")
+		if endTime == "" {
+			errors.ErrorMsg("end time of your meeting is required!")
+		}
+
+		entity.GetMeetings(startTime, endTime)
 	},
 }
 
@@ -86,10 +84,11 @@ func init() {
 	createMeetingCmd.Flags().StringP("starttime", "s", "", "enter the start time (YYYY-MM-DD) of your meeting.")
 	createMeetingCmd.Flags().StringP("endtime", "e", "", "enter the end time (YYYY-MM-DD) of your meeting.")
 
-	queryMeetingCmd.Flags().StringP("title", "t", "", "query a meeting")
+	queryMeetingsCmd.Flags().StringP("starttime", "s", "", "enter the start time (YYYY-MM-DD) of your time interval.")
+	queryMeetingsCmd.Flags().StringP("endtime", "e", "", "enter the end time (YYYY-MM-DD) of your time interval.")
 
 	RootCmd.AddCommand(createMeetingCmd)
-	RootCmd.AddCommand(queryMeetingCmd)
+	RootCmd.AddCommand(queryMeetingsCmd)
 
 	// Here you will define your flags and configuration settings.
 

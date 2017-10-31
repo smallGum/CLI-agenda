@@ -26,21 +26,17 @@ type meetings struct {
 	onesMeetings map[string]map[string]*Meeting // key: user name, value: the meetings the user has participated
 }
 
-// only one meetings instance can be accessed
-var AllMeetings *meetings = nil
+// AllMeetings only one meetings instance can be accessed
+var AllMeetings *meetings
 
 // -----------------------------------------------------
 // Meeting structure methods definition
 // -----------------------------------------------------
 
 // NewMeeting create a new meeting and add to AllMeetings
-func (m *Meeting) NewMeeting(title, start, end, sponsor string, parts []string) {
-	if AllMeetings == nil {
-		AllMeetings.initAllMeetings()
-	}
-
+func (m *Meeting) NewMeeting(title, start, end string, parts []string) {
 	m.validateTitle(title)
-	m.validateParticipators(parts)
+	//m.validateParticipators(parts)
 	startTime := m.getTime(start)
 	endTime := m.getTime(end)
 	m.validateTime(startTime, endTime)
@@ -51,11 +47,16 @@ func (m *Meeting) NewMeeting(title, start, end, sponsor string, parts []string) 
 		Participators: parts,
 		StartTime:     startTime,
 		EndTime:       endTime,
-		Sponsor:       getSponsor(),
+		// Sponsor:       getSponsor(),
+		Sponsor: parts[0],
 	}
 
 	AllMeetings.allMeetings[title] = m
 	for _, part := range parts {
+		if AllMeetings.onesMeetings[part] == nil {
+			AllMeetings.onesMeetings[part] = make(map[string]*Meeting)
+		}
+
 		AllMeetings.onesMeetings[part][title] = m
 	}
 
@@ -69,6 +70,7 @@ func (m *Meeting) validateTitle(title string) {
 	}
 }
 
+/*
 // check if all the participators have registered
 func (m *Meeting) validateParticipators(parts []string) {
 	for _, part := range parts {
@@ -85,10 +87,11 @@ func (m *Meeting) validateParticipators(parts []string) {
 		}
 	}
 }
+*/
 
 // convert string to time.Time
 func (m *Meeting) getTime(t string) time.Time {
-	tmpTime, err := time.Parse("2006-01-02 15:04:05", t)
+	tmpTime, err := time.Parse("2006-01-02", t)
 	if err != nil {
 		errors.ErrorMsg("invalid time format: " + t)
 	}
@@ -120,6 +123,38 @@ func (m *Meeting) successCreation(title string) {
 	fmt.Printf("meeting %s is successfully created!\n", title)
 }
 
+func GetMeeting(title string) {
+	fmt.Println("title: " + AllMeetings.allMeetings[title].Title)
+	fmt.Println("start: " + AllMeetings.allMeetings[title].StartTime.Format("2006-01-02"))
+	fmt.Println("end: " + AllMeetings.allMeetings[title].EndTime.Format("2006-01-02"))
+	fmt.Println("sponsor: " + AllMeetings.allMeetings[title].Sponsor)
+}
+
 // -----------------------------------------------------
-// meetings structure methods definition
+// initial and save methods
 // -----------------------------------------------------
+
+// InitAllMeetings initialize AllMeetings
+func InitAllMeetings() {
+	ms := loadAllMeetings()
+
+	AllMeetings = new(meetings)
+	AllMeetings.allMeetings = make(map[string]*Meeting)
+	AllMeetings.onesMeetings = make(map[string]map[string]*Meeting)
+	for _, m := range ms {
+		AllMeetings.allMeetings[m.Title] = &m
+
+		for _, person := range m.Participators {
+			if AllMeetings.onesMeetings[person] == nil {
+				AllMeetings.onesMeetings[person] = make(map[string]*Meeting)
+			}
+
+			AllMeetings.onesMeetings[person][m.Title] = &m
+		}
+	}
+}
+
+// SaveAllMeetings save AllMeetings
+func SaveAllMeetings() {
+	wirteAllMeetings()
+}

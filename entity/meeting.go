@@ -36,9 +36,9 @@ var AllMeetings *meetings
 // NewMeeting create a new meeting and add to AllMeetings
 func (m *Meeting) NewMeeting(title, start, end string, parts []string) {
 	m.validateTitle(title)
-	//m.validateParticipators(parts)
-	startTime := m.getTime(start)
-	endTime := m.getTime(end)
+	m.validateParticipators(parts)
+	startTime := getTime(start)
+	endTime := getTime(end)
 	m.validateTime(startTime, endTime)
 	m.validateNoConflicts(parts, startTime, endTime)
 
@@ -47,8 +47,7 @@ func (m *Meeting) NewMeeting(title, start, end string, parts []string) {
 		Participators: parts,
 		StartTime:     startTime,
 		EndTime:       endTime,
-		// Sponsor:       getSponsor(),
-		Sponsor: parts[0],
+		Sponsor:       GetCurrentUser().UserName,
 	}
 
 	AllMeetings.allMeetings[title] = m
@@ -59,6 +58,11 @@ func (m *Meeting) NewMeeting(title, start, end string, parts []string) {
 
 		AllMeetings.onesMeetings[part][title] = m
 	}
+	if AllMeetings.onesMeetings[m.Sponsor] == nil {
+		AllMeetings.onesMeetings[m.Sponsor] = make(map[string]*Meeting)
+	}
+
+	AllMeetings.onesMeetings[m.Sponsor][title] = m
 
 	m.successCreation(title)
 }
@@ -70,13 +74,12 @@ func (m *Meeting) validateTitle(title string) {
 	}
 }
 
-/*
 // check if all the participators have registered
 func (m *Meeting) validateParticipators(parts []string) {
 	for _, part := range parts {
 		flag := false
 
-		for _, user := range RegisteredUsers {
+		for _, user := range users {
 			if part == user.UserName {
 				flag = true
 			}
@@ -86,17 +89,6 @@ func (m *Meeting) validateParticipators(parts []string) {
 			errors.ErrorMsg("participator " + part + " has not registered!")
 		}
 	}
-}
-*/
-
-// convert string to time.Time
-func (m *Meeting) getTime(t string) time.Time {
-	tmpTime, err := time.Parse("2006-01-02", t)
-	if err != nil {
-		errors.ErrorMsg("invalid time format: " + t)
-	}
-
-	return tmpTime
 }
 
 // check if start time is less than end time
@@ -123,11 +115,46 @@ func (m *Meeting) successCreation(title string) {
 	fmt.Printf("meeting %s is successfully created!\n", title)
 }
 
-func GetMeeting(title string) {
-	fmt.Println("title: " + AllMeetings.allMeetings[title].Title)
-	fmt.Println("start: " + AllMeetings.allMeetings[title].StartTime.Format("2006-01-02"))
-	fmt.Println("end: " + AllMeetings.allMeetings[title].EndTime.Format("2006-01-02"))
-	fmt.Println("sponsor: " + AllMeetings.allMeetings[title].Sponsor)
+// -----------------------------------------------------
+// helpful function
+// -----------------------------------------------------
+
+// convert string to time.Time
+func getTime(t string) time.Time {
+	tmpTime, err := time.Parse("2006-01-02", t)
+	if err != nil {
+		errors.ErrorMsg("invalid time format: " + t)
+	}
+
+	return tmpTime
+}
+
+// ------------------------------------------------------
+// query meetings methods
+// ------------------------------------------------------
+
+// GetMeetings show meetings between time interval [start, end]
+func GetMeetings(start, end string) {
+	startTime := getTime(start)
+	endTime := getTime(end)
+	curUser := GetCurrentUser().UserName
+	flag := false
+
+	fmt.Println(curUser + "'s meetings between " + start + " and " + end + ": ")
+	for _, m := range AllMeetings.onesMeetings[curUser] {
+		if !(m.StartTime.After(endTime) || m.EndTime.Before(startTime)) {
+			flag = true
+			fmt.Println("title: " + m.Title)
+			fmt.Printf("participators: %v\n", m.Participators)
+			fmt.Println("start time: " + m.StartTime.Format("2006-01-02"))
+			fmt.Println("end time: " + m.EndTime.Format("2006-01-02"))
+			fmt.Println("sponsor: " + m.Sponsor)
+		}
+	}
+
+	if !flag {
+		fmt.Println("none.")
+	}
 }
 
 // -----------------------------------------------------

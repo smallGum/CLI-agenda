@@ -1,3 +1,19 @@
 new user: abc: errors.go:32:  created successfully 
 chengr25: errors.go:32:  log out
 abc: errors.go:32:  log in successfully
+new user: : errors.go:32:  created successfully 
+new user: : errors.go:32:  created successfully 
+new user: : errors.go:32:  created successfully 
+new user: aaa: errors.go:32:  created successfully 
+new user: : errors.go:32:  created successfully 
+new user: : errors.go:32:  created successfully 
+new user: : errors.go:32:  created successfully 
+new user: : errors.go:32:  created successfully 
+new user: : errors.go:32:  created successfully 
+abc: errors.go:32:  log out
+chengr25: errors.go:32:  log in successfully
+chengr25: errors.go:32:  set telephone to be 15521165745
+chengr25: errors.go:32:  set telephone to be 
+chengr25: errors.go:32:  set telephone to be 13521165745
+chengr25: errors.go:32:  set email to be 124444@gmail.com
+chengr25: errors.go:32:  log out

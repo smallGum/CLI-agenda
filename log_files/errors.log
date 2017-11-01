@@ -10,3 +10,28 @@ logger: : errors.go:12: reading meetings error: invalid character 'Z' looking fo
 guest: errors.go:12: meeting "Fuck" has existed. expected another title.
 guest: errors.go:12: participator guest has meeting time conflict.
 guest: errors.go:12: meeting "How to Fuck" has existed. expected another title.
+abc: errors.go:12: username required.
+abc: errors.go:12: password required!
+abc: errors.go:12: username required.
+abc: errors.go:12: password required!
+abc: errors.go:12: username required.
+abc: errors.go:12: password required!
+abc: errors.go:12: username required.
+abc: errors.go:12: password required!
+abc: errors.go:12: username required.
+abc: errors.go:12: password required!
+abc: errors.go:12: username required.
+abc: errors.go:12: password required!
+abc: errors.go:12: username required.
+abc: errors.go:12: password required!
+abc: errors.go:12: username required.
+abc: errors.go:12: password required!
+abc: errors.go:12: username required.
+abc: errors.go:12: password required!
+abc: errors.go:12: username required.
+abc: errors.go:12: password required!
+guest: errors.go:12: invalid telephone number required.
+guest: errors.go:12: valid telephone number required.
+guest: errors.go:12: valid telephone number required.
+chengr25: errors.go:12: valid telephone number required.
+chengr25: errors.go:12: valid telephone number required.

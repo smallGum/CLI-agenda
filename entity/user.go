@@ -99,14 +99,14 @@ func usernameIsUnique(registerName string) bool {
 }
 
 func Register(username string, password string) bool {
-	if usernameIsUnique(username) {
+	if !usernameIsUnique(username) || username == "" || password == "" {
+		return false
+	} else {
 		new_user := NewUser(username, password)
 		users[username] = new_user
 		// fmt.Println(users)
 		WriteJson("", "./json_files/users.json")
 		return true
-	} else {
-		return false
 	}
 }
 
@@ -126,6 +126,34 @@ func Login(username string, password string) bool {
 		}
 	} else {
 		return false
+	}
+}
+
+func (user User) SetEmail(email string) bool {
+	if currentUser.UserName == "guest" {
+		fmt.Println("guest have no access to this")
+		return false
+	} else {
+		currentUser.Email = email
+		users[currentUser.UserName] = currentUser
+		WriteJson("", "./json_files/users.json")
+		temp := ToJson(currentUser)
+		ioutil.WriteFile("./json_files/currentUser.json", []byte(temp), 0644)
+		return true
+	}
+}
+
+func (user User) SetTelephone(tel string) bool {
+	if currentUser.UserName == "guest" {
+		fmt.Println("guest have no access to this")
+		return false
+	} else {
+		currentUser.Tel = tel
+		users[currentUser.UserName] = currentUser
+		WriteJson("", "./json_files/users.json")
+		temp := ToJson(currentUser)
+		ioutil.WriteFile("./json_files/currentUser.json", []byte(temp), 0644)
+		return true
 	}
 }
 

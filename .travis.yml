@@ -4,3 +4,7 @@ go:
   - 1.9
 
 go_import_path: github.com/jack-cheng/CLI-agenda/
+
+script:
+  - cd github.com/jack-cheng/CLI-agenda/entity
+  - go test -v ./...

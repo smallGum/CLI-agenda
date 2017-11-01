@@ -28,10 +28,22 @@ var loginCmd = &cobra.Command{
 	Long:  `for guests to enter correct username and password to login `,
 	Args:  cobra.MinimumNArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
-		if true { //TODO check whether the username and password is correct
+		if entity.Login(args[0], args[1]) {
 			fmt.Println("user:" + args[0] + " log in successfully")
 		} else {
 			fmt.Println("failed to log in!")
+		}
+	},
+}
+
+var logoutCmd = &cobra.Command{
+	Use:   "logout",
+	Short: "logout",
+	Long:  `log out as a guest`,
+	Args:  cobra.MaximumNArgs(0),
+	Run: func(cmd *cobra.Command, args []string) {
+		if entity.GetCurrentUser().Logout() {
+			fmt.Println("now you are a guest")
 		}
 	},
 }
@@ -53,6 +65,26 @@ var registerCmd = &cobra.Command{
 	},
 }
 
+var usersCmd = &cobra.Command{
+	Use:   "users",
+	Short: "list all users",
+	Long:  `list all users' information`,
+	Args:  cobra.MaximumNArgs(0),
+	Run: func(cmd *cobra.Command, args []string) {
+		entity.GetCurrentUser().LookupAllUser()
+	},
+}
+
+var cancelUserCmd = &cobra.Command{
+	Use:   "cancelUser",
+	Short: "remove an account from users",
+	Long:  `remove an account from users`,
+	Args:  cobra.MaximumNArgs(0),
+	Run: func(cmd *cobra.Command, args []string) {
+		entity.GetCurrentUser().CancelAccount()
+	},
+}
+
 func init() {
 	RootCmd.AddCommand(loginCmd)
 	loginCmd.Flags().StringP("username", "n", "", "the name of user to log in")
@@ -62,6 +94,9 @@ func init() {
 	registerCmd.Flags().StringP("username", "u", "", "the name of new user to be created")
 	registerCmd.Flags().StringP("password", "p", "", "the password of user to be created")
 
+	RootCmd.AddCommand(logoutCmd)
+	RootCmd.AddCommand(usersCmd)
+	RootCmd.AddCommand(cancelUserCmd)
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command

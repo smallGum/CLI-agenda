@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"os"
 )
@@ -16,18 +17,18 @@ type User struct {
 }
 
 var users = map[string]User{}
-var currentUser = NewUser("guest", "")
+var currentUser User
 
-// func init() {
-// 	fmt.Print("a")
-// 	fmt.Println(users)
-// 	tempUsers := ReadJson("users.json")
-// 	for _, value := range tempUsers {
-// 		users[value.UserName] = value
-// 	}
-// 	fmt.Print("b")
-// 	fmt.Println(users)
-// }
+func init() {
+	allUsers := ReadJson("./json_files/users.json")
+	for _, value := range allUsers {
+		users[value.UserName] = value
+	}
+	guest := NewUser("guest", "guest")
+	users["guest"] = guest
+	current := ReadJson("./json_files/currentUser.json")
+	currentUser = current[0]
+}
 
 func GetCurrentUser() User {
 	return currentUser
@@ -70,15 +71,13 @@ func ToJson(p interface{}) string {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
-	// fmt.Println("new string is :" + string(bytes))
 	return string(bytes)
 }
 
 //write to json file
 func WriteJson(contents string, destination string) {
-	file, _ := os.OpenFile("./json_files/users.json", os.O_WRONLY|os.O_CREATE, 0)
+	file, _ := os.OpenFile(destination, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0)
 	encoder := json.NewEncoder(file)
-
 	for _, v := range users {
 		if v.UserName != "" {
 			encoder.Encode(v)
@@ -99,48 +98,72 @@ func usernameIsUnique(registerName string) bool {
 }
 
 func Register(username string, password string) bool {
-	// fmt.Print("a")
-	// fmt.Println(users)
-	tempUsers := ReadJson("./json_files/users.json")
-	// fmt.Print("read content :")
-	// fmt.Println(tempUsers)
-	for _, value := range tempUsers {
-		users[value.UserName] = value
-	}
-	// fmt.Print("b")
-	// fmt.Println(users)
 	if usernameIsUnique(username) {
 		new_user := NewUser(username, password)
-		// fmt.Println(users)
 		users[username] = new_user
-		// fmt.Println(users)
-		temp := ToJson(users)
-		// fmt.Println(temp)
-		WriteJson(temp, "users.json")
+		WriteJson("", "./json_files/users.json")
 		return true
 	} else {
 		return false
 	}
 }
 
-// data := []byte(contents)
-// destination = "./users.json"
-// err := ioutil.WriteFile(destination, data, 0644)
-// if err != nil {
-// 	log.Fatal(err)
-// }
-// func (user *User) logout() {
-//
-// }
-//
-// func (user *User) lookupAllUser() {
-//
-// }
-//
-// func (user *User) cancelAccount() {
-//
-// }
-//
+func Login(username string, password string) bool {
+	if GetCurrentUser().UserName != "guest" {
+		log.Fatal("you have already logged in, to switch to another account," +
+			"you must log out first")
+	}
+	user, exist := users[username]
+	if exist {
+		if user.Password == password {
+			temp := ToJson(user)
+			ioutil.WriteFile("./json_files/currentUser.json", []byte(temp), 0644)
+			return true
+		} else {
+			return false
+		}
+	} else {
+		return false
+	}
+}
+
+func (user User) Logout() bool {
+	if user.UserName == "guest" {
+		log.Fatal("you haven't logged in!")
+		return false
+	} else {
+		temp := ToJson(users["guest"])
+		ioutil.WriteFile("./json_files/currentUser.json", []byte(temp), 0644)
+		return true
+	}
+}
+
+func (user User) LookupAllUser() {
+	fmt.Println("there are", len(users), " users:")
+	fmt.Println("--------------------------")
+	if user.UserName == "guest" {
+		log.Fatal("only users loged in have access to this")
+		return
+	} else {
+		for _, user := range users {
+			fmt.Println("user:" + user.UserName)
+			fmt.Println("email:" + user.Email)
+			fmt.Println("tel:" + user.Tel)
+			fmt.Println("--------------------------")
+		}
+	}
+}
+
+func (user User) CancelAccount() {
+	if user.UserName != "guest" {
+		user.Logout()
+		delete(users, user.UserName)
+		WriteJson("", "./json_files/users.json")
+	} else {
+		log.Fatal("you can not cancel guest public account")
+	}
+}
+
 // func (user *User) lookupMeetings() {
 //
 // }

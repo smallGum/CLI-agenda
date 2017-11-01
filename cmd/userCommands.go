@@ -57,6 +57,17 @@ var registerCmd = &cobra.Command{
 	action will fail.`,
 	Args: cobra.MinimumNArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
+		//
+		// username, _ := cmd.Flags().GetString("username")
+		// // if username== "" {
+		// // 	errors.ErrorMsg(entity.GetCurrentUser().UserName, "title of new meeting is required.")
+		// // }
+		//
+		// password, _ := cmd.Flags().GetString("password")
+		// // if password == "" {
+		// // 	errors.ErrorMsg(entity.GetCurrentUser().UserName, "at least one participators of new meeting is required!")
+		// // }
+
 		if entity.Register(args[0], args[1]) {
 			fmt.Println("user:" + args[0] + " created successfully!")
 		} else {
@@ -85,6 +96,36 @@ var cancelUserCmd = &cobra.Command{
 	},
 }
 
+var quitMeetingCmd = &cobra.Command{
+	Use:   "quit",
+	Short: "quit from all meetings with you as participator",
+	Long:  `quit from all meetings with you as participator`,
+	Args:  cobra.MaximumNArgs(0),
+	Run: func(cmd *cobra.Command, args []string) {
+		entity.GetCurrentUser().QuitMeeting()
+	},
+}
+
+var clearMeetingsCmd = &cobra.Command{
+	Use:   "clearMeetings",
+	Short: "clear all meetings with you as sponsor",
+	Long:  `clear all meetings with you as sponsor`,
+	Args:  cobra.MaximumNArgs(0),
+	Run: func(cmd *cobra.Command, args []string) {
+		entity.GetCurrentUser().ClearAllMeetings()
+	},
+}
+
+var cancelMeetingsCmd = &cobra.Command{
+	Use:   "cancelMeeting",
+	Short: "cancel meetings you sponsored with specified title",
+	Long:  `cancel meetings you sponsored with specified title`,
+	Args:  cobra.MinimumNArgs(1),
+	Run: func(cmd *cobra.Command, args []string) {
+		entity.GetCurrentUser().CancelMeeting(args[0])
+	},
+}
+
 func init() {
 	RootCmd.AddCommand(loginCmd)
 	loginCmd.Flags().StringP("username", "n", "", "the name of user to log in")
@@ -97,6 +138,9 @@ func init() {
 	RootCmd.AddCommand(logoutCmd)
 	RootCmd.AddCommand(usersCmd)
 	RootCmd.AddCommand(cancelUserCmd)
+	RootCmd.AddCommand(quitMeetingCmd)
+	RootCmd.AddCommand(clearMeetingsCmd)
+	RootCmd.AddCommand(cancelMeetingsCmd)
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command

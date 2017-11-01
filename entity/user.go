@@ -102,6 +102,7 @@ func Register(username string, password string) bool {
 	if usernameIsUnique(username) {
 		new_user := NewUser(username, password)
 		users[username] = new_user
+		// fmt.Println(users)
 		WriteJson("", "./json_files/users.json")
 		return true
 	} else {
@@ -157,6 +158,8 @@ func (user User) LookupAllUser() {
 
 func (user User) CancelAccount() {
 	if user.UserName != "guest" {
+		user.QuitMeeting()
+		user.ClearAllMeetings()
 		user.Logout()
 		delete(users, user.UserName)
 		WriteJson("", "./json_files/users.json")
@@ -165,18 +168,27 @@ func (user User) CancelAccount() {
 	}
 }
 
-// func (user *User) lookupMeetings() {
+func (user User) CancelMeeting(title string) {
+	meeting, exist := AllMeetings.onesMeetings[user.UserName][title]
+	// fmt.Println(AllMeetings.onesMeetings[user.UserName])
+	if exist {
+		//TODO cancel the target meeting
+		fmt.Println("cancel meeting " + meeting.Title + " called!")
+	} else {
+		log.Fatal("meeting under the given title sponsored by current user doesn't exist")
+	}
+}
+
 //
-// }
-//
-// func (user *User) cancelMeeting() {
-//
-// }
-//
-// func (user *User) quitMeeting() {
-//
-// }
-//
-// func (user *User) clearAllMeetings() {
-//
-// }
+func (user User) QuitMeeting() {
+	//TODO remove user from all meeting's participators
+	fmt.Println("quitMeeting Called")
+}
+
+func (user User) ClearAllMeetings() {
+	delete(AllMeetings.onesMeetings, user.UserName)
+}
+
+//创建会议
+//增删会议
+//查询给定时间段的会议

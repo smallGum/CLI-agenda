@@ -10,7 +10,7 @@ func ErrorMsg(usr, err string) {
 	file, _ := os.OpenFile("log_files/errors.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0)
 	logger := log.New(file, usr+": ", log.Lshortfile)
 	logger.Println(err)
-	log.Fatalln(err)
+	log.Println(err)
 
 	file.Close()
 }

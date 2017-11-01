@@ -52,8 +52,7 @@ var createMeetingCmd = &cobra.Command{
 			errors.ErrorMsg(entity.GetCurrentUser().UserName, "end time of new meeting is required!")
 		}
 
-		m := new(entity.Meeting)
-		m.NewMeeting(title, startTime, endTime, participators)
+		entity.NewMeeting(title, startTime, endTime, participators)
 		errors.LogMeetingOperation(entity.GetCurrentUser().UserName, "successfully create a new meeting \""+title+"\".")
 	},
 }

@@ -18,6 +18,7 @@ import (
 	"fmt"
 
 	"github.com/jack-cheng/CLI-agenda/entity"
+	"github.com/jack-cheng/CLI-agenda/errors"
 	"github.com/spf13/cobra"
 )
 
@@ -26,10 +27,19 @@ var loginCmd = &cobra.Command{
 	Use:   "login",
 	Short: "for guest to login",
 	Long:  `for guests to enter correct username and password to login `,
-	Args:  cobra.MinimumNArgs(2),
+	// Args:  cobra.MinimumNArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
-		if entity.Login(args[0], args[1]) {
-			fmt.Println("user:" + args[0] + " log in successfully")
+		username, _ := cmd.Flags().GetString("username")
+		if username == "" {
+			errors.ErrorMsg(entity.GetCurrentUser().UserName, "username required.")
+		}
+		password, _ := cmd.Flags().GetString("password")
+		if password == "" {
+			errors.ErrorMsg(entity.GetCurrentUser().UserName, "password required!")
+		}
+		if entity.Login(username, password) {
+			errors.LogUserOperation(username, " log in successfully")
+			fmt.Println("user:" + username + " log in successfully")
 		} else {
 			fmt.Println("failed to log in!")
 		}
@@ -40,9 +50,10 @@ var logoutCmd = &cobra.Command{
 	Use:   "logout",
 	Short: "logout",
 	Long:  `log out as a guest`,
-	Args:  cobra.MaximumNArgs(0),
+	// Args:  cobra.MaximumNArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
 		if entity.GetCurrentUser().Logout() {
+			errors.LogUserOperation(entity.GetCurrentUser().UserName, " log out")
 			fmt.Println("now you are a guest")
 		}
 	},
@@ -55,21 +66,19 @@ var registerCmd = &cobra.Command{
 	Long: `register a new user with this command ,followed by a unique username and
 	password. If the user by the given username is already existed, the register
 	action will fail.`,
-	Args: cobra.MinimumNArgs(2),
+	// Args: cobra.MinimumNArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
-		//
-		// username, _ := cmd.Flags().GetString("username")
-		// // if username== "" {
-		// // 	errors.ErrorMsg(entity.GetCurrentUser().UserName, "title of new meeting is required.")
-		// // }
-		//
-		// password, _ := cmd.Flags().GetString("password")
-		// // if password == "" {
-		// // 	errors.ErrorMsg(entity.GetCurrentUser().UserName, "at least one participators of new meeting is required!")
-		// // }
-
-		if entity.Register(args[0], args[1]) {
-			fmt.Println("user:" + args[0] + " created successfully!")
+		username, _ := cmd.Flags().GetString("username")
+		if username == "" {
+			errors.ErrorMsg(entity.GetCurrentUser().UserName, "username required.")
+		}
+		password, _ := cmd.Flags().GetString("password")
+		if password == "" {
+			errors.ErrorMsg(entity.GetCurrentUser().UserName, "password required!")
+		}
+		if entity.Register(username, password) {
+			errors.LogUserOperation("new user: "+username, " created successfully ")
+			fmt.Println("user:" + username + " created successfully!")
 		} else {
 			fmt.Println("fail to create a new user")
 		}
@@ -80,7 +89,7 @@ var usersCmd = &cobra.Command{
 	Use:   "users",
 	Short: "list all users",
 	Long:  `list all users' information`,
-	Args:  cobra.MaximumNArgs(0),
+	// Args:  cobra.MaximumNArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
 		entity.GetCurrentUser().LookupAllUser()
 	},
@@ -90,9 +99,12 @@ var cancelUserCmd = &cobra.Command{
 	Use:   "cancelUser",
 	Short: "remove an account from users",
 	Long:  `remove an account from users`,
-	Args:  cobra.MaximumNArgs(0),
+	// Args:  cobra.MaximumNArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
-		entity.GetCurrentUser().CancelAccount()
+		temp := entity.GetCurrentUser().UserName
+		if entity.GetCurrentUser().CancelAccount() {
+			errors.LogUserOperation("user:"+temp, "cancel its account")
+		}
 	},
 }
 
@@ -129,7 +141,7 @@ var cancelMeetingsCmd = &cobra.Command{
 
 func init() {
 	RootCmd.AddCommand(loginCmd)
-	loginCmd.Flags().StringP("username", "n", "", "the name of user to log in")
+	loginCmd.Flags().StringP("username", "u", "", "the name of user to log in")
 	loginCmd.Flags().StringP("password", "p", "", "the password of user to log in")
 
 	RootCmd.AddCommand(registerCmd)

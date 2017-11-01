@@ -155,15 +155,17 @@ func (user User) LookupAllUser() {
 	}
 }
 
-func (user User) CancelAccount() {
+func (user User) CancelAccount() bool {
 	if user.UserName != "guest" {
 		user.QuitMeeting()
 		user.ClearAllMeetings()
 		user.Logout()
 		delete(users, user.UserName)
 		WriteJson("", "./json_files/users.json")
+		return true
 	} else {
 		log.Fatal("you can not cancel guest public account")
+		return false
 	}
 }
 

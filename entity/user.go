@@ -19,7 +19,8 @@ type User struct {
 var users = map[string]User{}
 var currentUser User
 
-func init() {
+// InitAllUsers initialize all users
+func InitAllUsers() {
 	allUsers := ReadJson("./json_files/users.json")
 	for _, value := range allUsers {
 		users[value.UserName] = value

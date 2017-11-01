@@ -20,6 +20,7 @@ import (
 )
 
 func main() {
+	entity.InitAllUsers()
 	entity.InitAllMeetings()
 	cmd.Execute()
 	entity.SaveAllMeetings()

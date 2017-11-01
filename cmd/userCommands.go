@@ -102,7 +102,8 @@ var quitMeetingCmd = &cobra.Command{
 	Long:  `quit from all meetings with you as participator`,
 	Args:  cobra.MaximumNArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
-		entity.GetCurrentUser().QuitMeeting()
+		title, _ := cmd.Flags().GetString("title")
+		entity.GetCurrentUser().QuitMeeting(title)
 	},
 }
 
@@ -134,6 +135,8 @@ func init() {
 	RootCmd.AddCommand(registerCmd)
 	registerCmd.Flags().StringP("username", "u", "", "the name of new user to be created")
 	registerCmd.Flags().StringP("password", "p", "", "the password of user to be created")
+
+	quitMeetingCmd.Flags().StringP("title", "t", "", "the title of the meeting to quit")
 
 	RootCmd.AddCommand(logoutCmd)
 	RootCmd.AddCommand(usersCmd)

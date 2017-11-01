@@ -19,7 +19,8 @@ type User struct {
 var users = map[string]User{}
 var currentUser User
 
-func init() {
+// InitAllUsers initialize all users
+func InitAllUsers() {
 	allUsers := ReadJson("./json_files/users.json")
 	for _, value := range allUsers {
 		users[value.UserName] = value
@@ -157,7 +158,9 @@ func (user User) LookupAllUser() {
 
 func (user User) CancelAccount() bool {
 	if user.UserName != "guest" {
-		user.QuitMeeting()
+		for _, m := range AllMeetings.onesMeetings[user.UserName] {
+			user.QuitMeeting(m.Title)
+		}
 		user.ClearAllMeetings()
 		user.Logout()
 		delete(users, user.UserName)
@@ -173,7 +176,9 @@ func (user User) CancelMeeting(title string) {
 	meeting, exist := AllMeetings.onesMeetings[user.UserName][title]
 	// fmt.Println(AllMeetings.onesMeetings[user.UserName])
 	if exist {
-		//TODO cancel the target meeting
+		// cancel the target meeting
+		delete(AllMeetings.allMeetings, title)
+		delete(AllMeetings.onesMeetings[user.UserName], title)
 		fmt.Println("cancel meeting " + meeting.Title + " called!")
 	} else {
 		log.Fatal("meeting under the given title sponsored by current user doesn't exist")
@@ -181,13 +186,28 @@ func (user User) CancelMeeting(title string) {
 }
 
 //
-func (user User) QuitMeeting() {
-	//TODO remove user from all meeting's participators
+func (user User) QuitMeeting(title string) {
+	// remove user from meeting participators
+	meeting, exist := AllMeetings.onesMeetings[user.UserName][title]
+
+	if exist {
+		if meeting.Sponsor != user.UserName {
+			delete(AllMeetings.onesMeetings[user.UserName], title)
+		}
+	} else {
+		log.Fatal("meeting under the given title participated by current user doesn't exist")
+	}
+
 	fmt.Println("quitMeeting Called")
 }
 
 func (user User) ClearAllMeetings() {
-	delete(AllMeetings.onesMeetings, user.UserName)
+	for _, m := range AllMeetings.onesMeetings[user.UserName] {
+		if m.Sponsor == user.UserName {
+			delete(AllMeetings.allMeetings, m.Title)
+			delete(AllMeetings.onesMeetings[user.UserName], m.Title)
+		}
+	}
 }
 
 //创建会议

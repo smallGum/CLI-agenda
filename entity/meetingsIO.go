@@ -34,7 +34,7 @@ func loadAllMeetings() []Meeting {
 
 // write all meetings to the file
 func wirteAllMeetings() {
-	file, _ := os.OpenFile("json_files/meetings.json", os.O_WRONLY|os.O_CREATE, 0)
+	file, _ := os.OpenFile("json_files/meetings.json", os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0)
 	encoder := json.NewEncoder(file)
 
 	for _, v := range AllMeetings.allMeetings {

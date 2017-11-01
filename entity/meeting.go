@@ -2,6 +2,7 @@ package entity
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/jack-cheng/CLI-agenda/errors"
@@ -34,15 +35,26 @@ var AllMeetings *meetings
 // -----------------------------------------------------
 
 // NewMeeting create a new meeting and add to AllMeetings
-func (m *Meeting) NewMeeting(title, start, end string, parts []string) {
-	m.validateTitle(title)
-	m.validateParticipators(parts)
-	startTime := getTime(start)
-	endTime := getTime(end)
-	m.validateTime(startTime, endTime)
-	m.validateNoConflicts(parts, startTime, endTime)
+func NewMeeting(title, start, end string, parts []string) {
+	if !(validateTitle(title)) {
+		os.Exit(1)
+	}
+	if !(validateParticipators(parts)) {
+		os.Exit(1)
+	}
+	startTime, ok1 := getTime(start)
+	endTime, ok2 := getTime(end)
+	if (!ok1) || (!ok2) {
+		os.Exit(1)
+	}
+	if !(validateTime(startTime, endTime)) {
+		os.Exit(1)
+	}
+	if !(validateNoConflicts(parts, startTime, endTime)) {
+		os.Exit(1)
+	}
 
-	m = &Meeting{
+	m := &Meeting{
 		Title:         title,
 		Participators: parts,
 		StartTime:     startTime,
@@ -66,14 +78,16 @@ func (m *Meeting) NewMeeting(title, start, end string, parts []string) {
 }
 
 // check if title has existed
-func (m *Meeting) validateTitle(title string) {
+func validateTitle(title string) bool {
 	if AllMeetings.allMeetings[title] != nil {
 		errors.ErrorMsg(GetCurrentUser().UserName, "meeting \""+title+"\" has existed. expected another title.")
+		return false
 	}
+	return true
 }
 
 // check if all the participators have registered
-func (m *Meeting) validateParticipators(parts []string) {
+func validateParticipators(parts []string) bool {
 	for _, part := range parts {
 		flag := false
 
@@ -85,27 +99,33 @@ func (m *Meeting) validateParticipators(parts []string) {
 
 		if !flag {
 			errors.ErrorMsg(GetCurrentUser().UserName, "meeting participator "+part+" has not registered.")
+			return false
 		}
 	}
+	return true
 }
 
 // check if start time is less than end time
-func (m *Meeting) validateTime(start, end time.Time) {
+func validateTime(start, end time.Time) bool {
 	if start.After(end) || start.Equal(end) {
 		errors.ErrorMsg(GetCurrentUser().UserName, "invalid start time, which should be less than end time")
+		return false
 	}
+	return true
 }
 
 // check if there are confilts
-func (m *Meeting) validateNoConflicts(parts []string, start, end time.Time) {
+func validateNoConflicts(parts []string, start, end time.Time) bool {
 	for _, part := range parts {
 		for _, ms := range AllMeetings.onesMeetings[part] {
 			if !(end.Before(ms.StartTime) || end.Equal(ms.StartTime) ||
 				start.After(ms.EndTime) || start.Equal(ms.EndTime)) {
 				errors.ErrorMsg(GetCurrentUser().UserName, "participator "+part+" has meeting time conflict.")
+				return false
 			}
 		}
 	}
+	return true
 }
 
 // -----------------------------------------------------
@@ -113,13 +133,14 @@ func (m *Meeting) validateNoConflicts(parts []string, start, end time.Time) {
 // -----------------------------------------------------
 
 // convert string to time.Time
-func getTime(t string) time.Time {
+func getTime(t string) (time.Time, bool) {
 	tmpTime, err := time.Parse("2006-01-02", t)
 	if err != nil {
 		errors.ErrorMsg(GetCurrentUser().UserName, "invalid time format: "+t)
+		return time.Time{}, false
 	}
 
-	return tmpTime
+	return tmpTime, true
 }
 
 // ------------------------------------------------------
@@ -128,8 +149,11 @@ func getTime(t string) time.Time {
 
 // GetMeetings show meetings between time interval [start, end]
 func GetMeetings(start, end string) {
-	startTime := getTime(start)
-	endTime := getTime(end)
+	startTime, ok1 := getTime(start)
+	endTime, ok2 := getTime(end)
+	if (!ok1) || (!ok2) {
+		os.Exit(1)
+	}
 	curUser := GetCurrentUser().UserName
 	flag := false
 

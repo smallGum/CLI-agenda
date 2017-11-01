@@ -9,3 +9,4 @@ guest: errors.go:12: invalid time format: 2017-08
 logger: : errors.go:12: reading meetings error: invalid character 'Z' looking for beginning of value
 guest: errors.go:12: meeting "Fuck" has existed. expected another title.
 guest: errors.go:12: participator guest has meeting time conflict.
+guest: errors.go:12: meeting "How to Fuck" has existed. expected another title.

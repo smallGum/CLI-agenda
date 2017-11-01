@@ -43,7 +43,4 @@ Use "CLI-agenda [command] --help" for more information about a command.
 
 ## Commands Design
 
-Please refer to 
-
-[cmd-design]: ./cmd/cmd-design.md
-
+Please refer to [cmd-design](./cmd/cmd-design.md)

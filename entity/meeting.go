@@ -143,6 +143,33 @@ func getTime(t string) (time.Time, bool) {
 	return tmpTime, true
 }
 
+// RemoveParticipator remove participators from a meeting
+func RemoveParticipator(title, name string) {
+	for i, part := range AllMeetings.allMeetings[title].Participators {
+		if part == name {
+			AllMeetings.allMeetings[title].Participators = append(AllMeetings.allMeetings[title].Participators[:i], AllMeetings.allMeetings[title].Participators[i+1:]...)
+			if len(AllMeetings.allMeetings[title].Participators) == 0 {
+				delete(AllMeetings.allMeetings, title)
+			}
+			break
+		}
+	}
+
+	delete(AllMeetings.onesMeetings[name], title)
+
+	for _, ms := range AllMeetings.onesMeetings {
+		for _, m := range ms {
+			if m.Title == title {
+				for i, part := range m.Participators {
+					if part == name {
+						m.Participators = append(m.Participators[:i], m.Participators[i+1:]...)
+					}
+				}
+			}
+		}
+	}
+}
+
 // ------------------------------------------------------
 // query meetings methods
 // ------------------------------------------------------

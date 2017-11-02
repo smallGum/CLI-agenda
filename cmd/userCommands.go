@@ -139,6 +139,36 @@ var cancelMeetingsCmd = &cobra.Command{
 	},
 }
 
+var setEmailCmd = &cobra.Command{
+	Use:   "setEmail",
+	Short: "set registered user's email",
+	Long:  `set registered user's email`,
+	// Args:  cobra.MinimumNArgs(1),
+	Run: func(cmd *cobra.Command, args []string) {
+		email, _ := cmd.Flags().GetString("email")
+		if email == "" {
+			errors.ErrorMsg(entity.GetCurrentUser().UserName, "valid email required.")
+		} else if entity.GetCurrentUser().SetEmail(email) {
+			errors.LogUserOperation(entity.GetCurrentUser().UserName, " set email to be "+email)
+		}
+	},
+}
+
+var setTelCmd = &cobra.Command{
+	Use:   "setTel",
+	Short: "set registered user's telephone number",
+	Long:  `set registered user's telephone number`,
+	// Args:  cobra.MinimumNArgs(1),
+	Run: func(cmd *cobra.Command, args []string) {
+		tel, _ := cmd.Flags().GetString("telephone")
+		if tel == "" {
+			errors.ErrorMsg(entity.GetCurrentUser().UserName, "valid telephone number required.")
+		} else if entity.GetCurrentUser().SetTelephone(tel) {
+			errors.LogUserOperation(entity.GetCurrentUser().UserName, " set telephone to be "+tel)
+		}
+	},
+}
+
 func init() {
 	RootCmd.AddCommand(loginCmd)
 	loginCmd.Flags().StringP("username", "u", "", "the name of user to log in")
@@ -149,7 +179,11 @@ func init() {
 	registerCmd.Flags().StringP("password", "p", "", "the password of user to be created")
 
 	quitMeetingCmd.Flags().StringP("title", "t", "", "the title of the meeting to quit")
+	setEmailCmd.Flags().StringP("email", "e", "", "set current user's email")
+	setTelCmd.Flags().StringP("telephone", "t", "", "set current user's telephone number")
 
+	RootCmd.AddCommand(setTelCmd)
+	RootCmd.AddCommand(setEmailCmd)
 	RootCmd.AddCommand(logoutCmd)
 	RootCmd.AddCommand(usersCmd)
 	RootCmd.AddCommand(cancelUserCmd)

@@ -1,5 +1,31 @@
 # Commands Design of CLI-agenda
 
+## register
+Command `register` is used to create a new user, unique username and free password is required
+```
+$ register -u chengr25 -p 123456
+```
+
+where
+
++ `-u` should be followed by **username** of user to be created, it also works by entering
+`--username=[username]`
++ `-p` should be followed by **password** of user to be created, it also works by entering
+`--password=[password]`
+
+## login
+Command `login` is used to login as a registered user
+
+```
+$ login -u chengr25 -p 123456
+```
+where
+
++ `-u` should be followed by **username** of user to login, it also works by entering
+`--username=[username]`
++ `-p` should be followed by **password** of user to login, it also works by entering
+`--password=[password]`
+
 ## logout
 
 Command `logout` allows the current user to log out and switch into default user `guest` :
@@ -10,7 +36,7 @@ $ logout
 
 ## users
 
-Command `users` lists all registered users:
+Command `users` is used to list all registered users:
 
 ```shell
 $ users
@@ -18,11 +44,31 @@ $ users
 
 ## cancelUser
 
-Command `cancelUser` removes current user account and meetings sponsored by him. And also, removes him from meetings he has participated in:
+Command `cancelUser` removes current user account and meetings sponsored by him. And also, removes him from meetings he has participated in, then the current user of agenda will be switched to `guest`:
 
 ```shell
 $ cancelUser
 ```
+
+## setTel
+Command `setTel` is used to set registered user's telephone number, guest users have no access to this.
+```
+$ setTel -t 15521122735
+```
+where
+
++ `-t` means **telephone number**, it also works by entering `--telephone=12166136151`
+
+## setEmail
+
+Command `setEmail` is used to set registered user's email address, guest has no access to this.
+```
+$ setEmail -e 38437262@qq.com
+```
+
+where
+
++ `-e` means **email**, it also works by entering `--email=38437262@qq.com`
 
 ## createMeeting
 

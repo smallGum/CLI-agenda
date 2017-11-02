@@ -3,3 +3,64 @@ guest: errors.go:20: create a new meeting "Fuck".
 guest: errors.go:22: successfully create a new meeting "Fuck".
 guest: errors.go:22: successfully create a new meeting "How to Fuck".
 chengr25: errors.go:22: query the meetings between 2017-07-10 and 2017-08-20.
+user1: errors.go:22: successfully create a new meeting "Season You Like".
+user1: errors.go:22: query the meetings between 2017-07-07 and 2017-07-12.
+user1: errors.go:22: query the meetings between 2017-07-07 and 2017-07-13.
+user1: errors.go:22: query the meetings between 2017-07-07 and 2017-07-14.
+user1: errors.go:22: query the meetings between 2017-07-07 and 2017-07-12.
+user1: errors.go:22: query the meetings between 2017-07-07 and 2017-07-12.
+Alice: errors.go:22: successfully create a new meeting "How to Cook".
+Alice: errors.go:22: query the meetings between 2017-07-07 and 2017-07-12.
+Alice: errors.go:22: query the meetings between 2017-07-07 and 2017-07-12.
+Alice: errors.go:22: query the meetings between 2017-07-07 and 2017-07-12.
+Alice: errors.go:22: query the meetings between 2017-07-07 and 2017-07-12.
+Alice: errors.go:22: query the meetings between 2017-07-07 and 2017-07-12.
+user1: errors.go:22: successfully create a new meeting "Season You Like".
+Alice: errors.go:22: query the meetings between 2017-07-07 and 2017-07-12.
+Alice: errors.go:22: successfully create a new meeting "How to Cook".
+Alice: errors.go:22: query the meetings between 2017-07-07 and 2017-07-12.
+user1: errors.go:22: successfully create a new meeting "Season You Like".
+Alice: errors.go:22: successfully create a new meeting "How to Cook".
+Alice: errors.go:22: query the meetings between 2017-07-07 and 2017-07-12.
+Alice: errors.go:22: query the meetings between 2017-07-07 and 2017-07-12.
+Alice: errors.go:22: query the meetings between 2017-07-07 and 2017-07-12.
+Alice: errors.go:22: successfully create a new meeting "How to Cook".
+Alice: errors.go:22: successfully create a new meeting "How to Cook".
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.
+Alice: errors.go:22: query the meetings between 2017-07-08 and 2017-07-13.

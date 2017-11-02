@@ -39,7 +39,7 @@ func wirteAllMeetings() {
 
 	for _, v := range AllMeetings.allMeetings {
 		if v.Title != "" {
-			encoder.Encode(*v)
+			encoder.Encode(v)
 		}
 	}
 

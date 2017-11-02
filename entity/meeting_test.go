@@ -7,8 +7,8 @@ import (
 
 func TestValidateTitle(t *testing.T) {
 	AllMeetings = new(meetings)
-	AllMeetings.allMeetings = make(map[string]*Meeting)
-	AllMeetings.allMeetings["test"] = &Meeting{}
+	AllMeetings.allMeetings = make(map[string]Meeting)
+	AllMeetings.allMeetings["test"] = Meeting{}
 
 	if flag := validateTitle("test"); flag != false {
 		t.Error("validateTitle test failure!")
@@ -42,16 +42,16 @@ func TestValidateNoConflicts(t *testing.T) {
 	start, _ := time.Parse("2006-01-02", "2017-07-10")
 	end, _ := time.Parse("2006-01-02", "2017-08-10")
 	AllMeetings = new(meetings)
-	AllMeetings.onesMeetings = make(map[string]map[string]*Meeting)
-	m := &Meeting{
+	AllMeetings.onesMeetings = make(map[string]map[string]Meeting)
+	m := Meeting{
 		Title:         "nothing",
 		Participators: []string{"yes"},
 		StartTime:     start,
 		EndTime:       end,
 		Sponsor:       "none",
 	}
-	AllMeetings.onesMeetings["none"] = make(map[string]*Meeting)
-	AllMeetings.onesMeetings["yes"] = make(map[string]*Meeting)
+	AllMeetings.onesMeetings["none"] = make(map[string]Meeting)
+	AllMeetings.onesMeetings["yes"] = make(map[string]Meeting)
 	AllMeetings.onesMeetings["none"]["nothing"] = m
 	AllMeetings.onesMeetings["yes"]["nothing"] = m
 	parts1 := []string{"yes"}

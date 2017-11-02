@@ -109,7 +109,7 @@ var cancelUserCmd = &cobra.Command{
 }
 
 var quitMeetingCmd = &cobra.Command{
-	Use:   "quit",
+	Use:   "quitMeeting",
 	Short: "quit from all meetings with you as participator",
 	Long:  `quit from all meetings with you as participator`,
 	Args:  cobra.MaximumNArgs(0),
@@ -133,9 +133,9 @@ var cancelMeetingsCmd = &cobra.Command{
 	Use:   "cancelMeeting",
 	Short: "cancel meetings you sponsored with specified title",
 	Long:  `cancel meetings you sponsored with specified title`,
-	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		entity.GetCurrentUser().CancelMeeting(args[0])
+		title, _ := cmd.Flags().GetString("title")
+		entity.GetCurrentUser().CancelMeeting(title)
 	},
 }
 
@@ -181,6 +181,8 @@ func init() {
 	quitMeetingCmd.Flags().StringP("title", "t", "", "the title of the meeting to quit")
 	setEmailCmd.Flags().StringP("email", "e", "", "set current user's email")
 	setTelCmd.Flags().StringP("telephone", "t", "", "set current user's telephone number")
+
+	cancelMeetingsCmd.Flags().StringP("title", "t", "", "title of the meeting to be canceled")
 
 	RootCmd.AddCommand(setTelCmd)
 	RootCmd.AddCommand(setEmailCmd)

@@ -17,3 +17,12 @@ chengr25: errors.go:32:  set telephone to be
 chengr25: errors.go:32:  set telephone to be 13521165745
 chengr25: errors.go:32:  set email to be 124444@gmail.com
 chengr25: errors.go:32:  log out
+new user: user1: errors.go:32:  created successfully 
+new user: user2: errors.go:32:  created successfully 
+user1: errors.go:32:  log in successfully
+user1: errors.go:32:  log out
+user2: errors.go:32:  log in successfully
+user2: errors.go:32:  set telephone to be 15521165845
+user2: errors.go:32:  set email to be 123456@qq.com
+user:user2: errors.go:32: cancel its account
+user1: errors.go:32:  log in successfully

@@ -95,7 +95,7 @@ user:user1 log in successfully
 then
 
 ```
-aaron@chengr25:~/work/src/github.com/jack-cheng/CLI-agenda$ ./CLI-agenda usersthere are 3  users:
+$ ./CLI-agenda usersthere are 3  users:
 --------------------------
 user:user2
 email:

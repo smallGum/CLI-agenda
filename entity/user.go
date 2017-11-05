@@ -220,7 +220,7 @@ func (user User) QuitMeeting(title string) {
 
 	if exist {
 		if meeting.Sponsor != user.UserName {
-			delete(AllMeetings.onesMeetings[user.UserName], title)
+			RemoveParticipator(title, user.UserName)
 		}
 	} else {
 		log.Fatal("meeting under the given title participated by current user doesn't exist")

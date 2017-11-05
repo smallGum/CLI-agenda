@@ -35,3 +35,6 @@ guest: errors.go:12: valid telephone number required.
 guest: errors.go:12: valid telephone number required.
 chengr25: errors.go:12: valid telephone number required.
 chengr25: errors.go:12: valid telephone number required.
+guest: errors.go:12: username required.
+guest: errors.go:12: password required!
+guest: errors.go:12: meeting "Season You Like" has existed. expected another title.

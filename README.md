@@ -13,7 +13,6 @@
 ## Usage
 
 ```shell
-$ ./CLI-agenda --help
 CLI-agenda is cooperative program for meeting management using cobra package.
 	It supports commands such as register, login, creatingMeeting, clearMeetings and so on.
 
@@ -31,6 +30,8 @@ Available Commands:
   queryMeetings Query meetings of current login user between specific time interval
   quit          quit from all meetings with you as participator
   register      to register a new user
+  setEmail      set registered user's email
+  setTel        set registered user's telephone number
   users         list all users
 
 Flags:
@@ -65,6 +66,13 @@ $ ./CLI-agenda register --username=user2 --password=user2
 2017/11/02 08:30:42  created successfully
 user:user2 created successfully!
 
+```
+
+when you want create a user with existed user name, you will get
+
+```
+./CLI-agenda register -u user1 -p 123456
+2017/11/01 18:00:15 this username has been occupied
 ```
 
 now list all users, guest user has no access to this.
@@ -177,4 +185,104 @@ user:user1
 email:
 tel:
 --------------------------
+```
+
+Now we test about meeting operations. First we create three users:
+
+```
+./CLI-agenda users
+there are 4  users:
+--------------------------
+user:guest
+email:
+tel:
+--------------------------
+user:user1
+email:
+tel:
+--------------------------
+user:Alice
+email:
+tel:
+--------------------------
+user:Bob
+email:
+tel:
+--------------------------
+```
+
+create two new meetings:
+
+```
+./CLI-agenda createMeeting -t "Season You Like" -p Alice+Bob -s 2017-07-12 -e 2017-07-15
+2017/11/01 18:08:46 successfully create a new meeting "Season You Like".
+
+./CLI-agenda logout
+2017/11/01 18:18:41  log out
+now you are a guest
+
+./CLI-agenda login -u Alice -p 123456
+2017/11/01 18:19:00  log in successfully
+user:Alice log in successfully
+
+./CLI-agenda createMeeting -t "How to Cook" -p user1 -s 2017-07-08 -e 2017-07-12
+2017/11/01 18:19:50 successfully create a new meeting "How to Cook".
+```
+
+query one's meetings:
+
+```
+./CLI-agenda queryMeetings -s 2017-07-08 -e 2017-07-13
+Alice's meetings between 2017-07-08 and 2017-07-13:
+
+-------------------------------
+title: How to Cook
+participators: [user1]
+start time: 2017-07-07
+end time: 2017-07-12
+sponsor: Alice
+-------------------------------
+
+
+-------------------------------
+title: Season You Like
+participators: [Alice Bob]
+start time: 2017-07-12
+end time: 2017-07-15
+sponsor: user1
+-------------------------------
+
+2017/11/01 22:38:12 query the meetings between 2017-07-08 and 2017-07-13.
+```
+
+cancel one's meetings:
+
+```
+./CLI-agenda cancelMeeting -t "How to Cook"
+cancel meeting How to Cook called!
+
+./CLI-agenda queryMeetings -s 2017-07-08 -e 2017-07-13
+Alice's meetings between 2017-07-08 and 2017-07-13:
+
+-------------------------------
+title: Season You Like
+participators: [Alice Bob]
+start time: 2017-07-12
+end time: 2017-07-15
+sponsor: user1
+-------------------------------
+
+2017/11/01 22:44:57 query the meetings between 2017-07-08 and 2017-07-13.
+```
+
+quit meeting:
+
+```
+./CLI-agenda quitMeeting -t "Season You Like"
+quitMeeting Called
+
+./CLI-agenda queryMeetings -s 2017-07-08 -e 2017-07-13
+Alice's meetings between 2017-07-08 and 2017-07-13:
+none.
+2017/11/01 22:47:53 query the meetings between 2017-07-08 and 2017-07-13.
 ```

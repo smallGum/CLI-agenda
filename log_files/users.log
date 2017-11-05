@@ -26,3 +26,29 @@ user2: errors.go:32:  set telephone to be 15521165845
 user2: errors.go:32:  set email to be 123456@qq.com
 user:user2: errors.go:32: cancel its account
 user1: errors.go:32:  log in successfully
+new user: Alice: errors.go:32:  created successfully 
+new user: Bob: errors.go:32:  created successfully 
+user1: errors.go:32:  log out
+user1: errors.go:32:  log in successfully
+user1: errors.go:32:  log out
+Alice: errors.go:32:  log in successfully
+Alice: errors.go:32:  log out
+user1: errors.go:32:  log in successfully
+user1: errors.go:32:  log out
+Alice: errors.go:32:  log in successfully
+Alice: errors.go:32:  log out
+user1: errors.go:32:  log in successfully
+user1: errors.go:32:  log out
+Alice: errors.go:32:  log in successfully
+Alice: errors.go:32:  log out
+user1: errors.go:32:  log in successfully
+user1: errors.go:32:  log out
+Alice: errors.go:32:  log in successfully
+Alice: errors.go:32:  log out
+user1: errors.go:32:  log in successfully
+user1: errors.go:32:  log out
+Alice: errors.go:32:  log in successfully
+Alice: errors.go:32:  log out
+Alice: errors.go:32:  log in successfully
+Alice: errors.go:32:  log out
+Alice: errors.go:32:  log in successfully
